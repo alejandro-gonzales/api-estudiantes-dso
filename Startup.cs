@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using ApiEstudiantesV2.Context;
 
 namespace ApiEstudiantesV2
 {
@@ -26,6 +28,7 @@ namespace ApiEstudiantesV2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("sqlServer")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

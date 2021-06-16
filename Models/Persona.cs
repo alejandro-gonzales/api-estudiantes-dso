@@ -16,7 +16,7 @@ namespace ApiEstudiantesV2.Models
         public string celular { get; set; }
         public string direccion { get; set; }
         public string carnet { get; set; }
-        public DateTime fechaNacimiento { get; set; }
+        public DateTime fechaNac { get; set; }
         public bool estado { get; set; }
     }
 }
