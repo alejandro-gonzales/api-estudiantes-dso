@@ -8,7 +8,7 @@ using ApiEstudiantesV2.Context;
 
 namespace ApiEstudiantesV2.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class PersonaController : ControllerBase
     {
