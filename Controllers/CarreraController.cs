@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApiEstudiantesV2.Context;
 using ApiEstudiantesV2.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiEstudiantesV2.Controllers
 {
@@ -53,6 +54,51 @@ namespace ApiEstudiantesV2.Controllers
                 context.carrera.Add(carrera);
                 context.SaveChanges();
                 return CreatedAtRoute("GetByIdCarrera", new { carrera.id }, carrera);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut("{id}")]
+        public ActionResult Put(int id, [FromBody] Carrera carrera)
+        {
+            try
+            {
+                if (carrera.id == id)
+                {
+                    context.Entry(carrera).State = EntityState.Modified;
+                    context.SaveChanges();
+                    return CreatedAtRoute("GetById", new { id = carrera.id }, carrera);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpDelete("{id}")]
+        public ActionResult Delete(int id)
+        {
+            try
+            {
+                var carrera = context.carrera.FirstOrDefault(p => p.id == id);
+                if (carrera != null)
+                {
+                    context.carrera.Remove(carrera);
+                    context.SaveChanges();
+                    return Ok(id);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+
             }
             catch (Exception ex)
             {
