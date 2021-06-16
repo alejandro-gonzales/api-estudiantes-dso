@@ -11,10 +11,10 @@ namespace ApiEstudiantesV2.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class PersonaController : ControllerBase
+    public class TipoUsuarioController : ControllerBase
     {
         private readonly AppDbContext context;
-        public PersonaController(AppDbContext _context)
+        public TipoUsuarioController(AppDbContext _context)
         {
             this.context = _context;
         }
@@ -23,43 +23,41 @@ namespace ApiEstudiantesV2.Controllers
         {
             try
             {
-                return Ok(context.persona.ToList());
+                return Ok(context.tipoUsuario.ToList());
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-            
+
         }
         [HttpGet("{id}")]
         public ActionResult GetById(int id)
         {
             try
             {
-                var persona = context.persona.FirstOrDefault(item => item.id == id);
-                return Ok(persona);
+                var tipoUsuario = context.tipoUsuario.FirstOrDefault(item => item.id == id);
+                return Ok(tipoUsuario);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
-            }   
+            }
         }
-        [HttpGet("id", Name = "GetById")]
+        [HttpGet("id", Name = "GetByIdTipoUsuario")]
         [HttpPost]
-        public ActionResult Post([FromBody]Persona persona)
+        public ActionResult Post([FromBody] TipoUsuario tipoUsuario)
         {
             try
             {
-                context.persona.Add(persona);
+                context.tipoUsuario.Add(tipoUsuario);
                 context.SaveChanges();
-                return CreatedAtRoute("GetById", new { persona.id }, persona);
+                return CreatedAtRoute("GetByIdTipoUsuario", new { tipoUsuario.id }, tipoUsuario);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-
-
     }
 }
