@@ -11,10 +11,10 @@ namespace ApiEstudiantesV2.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class PersonaController : ControllerBase
+    public class EstudianteController : ControllerBase
     {
         private readonly AppDbContext context;
-        public PersonaController(AppDbContext _context)
+        public EstudianteController(AppDbContext _context)
         {
             this.context = _context;
         }
@@ -23,43 +23,41 @@ namespace ApiEstudiantesV2.Controllers
         {
             try
             {
-                return Ok(context.persona.ToList());
+                return Ok(context.estudiante.ToList());
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-            
+
         }
         [HttpGet("{id}")]
         public ActionResult GetById(int id)
         {
             try
             {
-                var persona = context.persona.FirstOrDefault(item => item.id == id);
-                return Ok(persona);
+                var estudiante = context.estudiante.FirstOrDefault(item => item.id == id);
+                return Ok(estudiante);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
-            }   
+            }
         }
-        [HttpGet("id", Name = "GetById")]
+        [HttpGet("id", Name = "GetByIdEstudiante")]
         [HttpPost]
-        public ActionResult Post([FromBody]Persona persona)
+        public ActionResult Post([FromBody] Estudiante estudiante)
         {
             try
             {
-                context.persona.Add(persona);
+                context.estudiante.Add(estudiante);
                 context.SaveChanges();
-                return CreatedAtRoute("GetById", new { persona.id }, persona);
+                return CreatedAtRoute("GetByIdCarrera", new { estudiante.id }, estudiante);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-
-
     }
 }

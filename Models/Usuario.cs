@@ -13,7 +13,7 @@ namespace ApiEstudiantesV2.Models
         public int personaId { get; set; }
         public int tipoUsuarioId { get; set; }
         public string correo { get; set; }
-        public string password { get; set; }
+        public string pass { get; set; }
         public bool estado { get; set; }
     }
 }

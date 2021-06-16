@@ -11,10 +11,10 @@ namespace ApiEstudiantesV2.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class PersonaController : ControllerBase
+    public class UsuarioController : ControllerBase
     {
         private readonly AppDbContext context;
-        public PersonaController(AppDbContext _context)
+        public UsuarioController(AppDbContext _context)
         {
             this.context = _context;
         }
@@ -23,43 +23,41 @@ namespace ApiEstudiantesV2.Controllers
         {
             try
             {
-                return Ok(context.persona.ToList());
+                return Ok(context.usuario.ToList());
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-            
+
         }
         [HttpGet("{id}")]
         public ActionResult GetById(int id)
         {
             try
             {
-                var persona = context.persona.FirstOrDefault(item => item.id == id);
-                return Ok(persona);
+                var usuario = context.usuario.FirstOrDefault(item => item.id == id);
+                return Ok(usuario);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
-            }   
+            }
         }
-        [HttpGet("id", Name = "GetById")]
+        [HttpGet("id", Name = "GetByIdUsuario")]
         [HttpPost]
-        public ActionResult Post([FromBody]Persona persona)
+        public ActionResult Post([FromBody] Usuario usuario)
         {
             try
             {
-                context.persona.Add(persona);
+                context.usuario.Add(usuario);
                 context.SaveChanges();
-                return CreatedAtRoute("GetById", new { persona.id }, persona);
+                return CreatedAtRoute("GetByIdUsuario", new { usuario.id }, usuario);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-
-
     }
 }
