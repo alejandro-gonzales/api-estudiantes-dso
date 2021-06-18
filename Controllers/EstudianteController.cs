@@ -14,17 +14,17 @@ namespace ApiEstudiantesV2.Controllers
     [ApiController]
     public class EstudianteController : ControllerBase
     {
-        private readonly AppDbContext context;
-        public EstudianteController(AppDbContext _context)
+        private readonly AppDbContext _context;
+        public EstudianteController(AppDbContext context)
         {
-            this.context = _context;
+            this._context = context;
         }
         [HttpGet]
         public ActionResult GetAll()
         {
             try
             {
-                return Ok(context.estudiante.ToList());
+                return Ok(_context.estudiante.Include(p=> p.persona).Include(c => c.carrera).ToList());
             }
             catch (Exception ex)
             {
@@ -37,7 +37,7 @@ namespace ApiEstudiantesV2.Controllers
         {
             try
             {
-                var estudiante = context.estudiante.FirstOrDefault(item => item.id == id);
+                var estudiante = _context.estudiante.Include(p => p.persona).Include(c => c.carrera).FirstOrDefault(item => item.id == id);
                 return Ok(estudiante);
             }
             catch (Exception ex)
@@ -51,9 +51,9 @@ namespace ApiEstudiantesV2.Controllers
         {
             try
             {
-                context.estudiante.Add(estudiante);
-                context.SaveChanges();
-                return CreatedAtRoute("GetByIdCarrera", new { estudiante.id }, estudiante);
+                _context.estudiante.Add(estudiante);
+                _context.SaveChanges();
+                return CreatedAtRoute("GetByIdEstudiante", new { estudiante.id }, estudiante);
             }
             catch (Exception ex)
             {
@@ -67,8 +67,8 @@ namespace ApiEstudiantesV2.Controllers
             {
                 if (estudiante.id == id)
                 {
-                    context.Entry(estudiante).State = EntityState.Modified;
-                    context.SaveChanges();
+                    _context.Entry(estudiante).State = EntityState.Modified;
+                    _context.SaveChanges();
                     return CreatedAtRoute("GetById", new { id = estudiante.id }, estudiante);
                 }
                 else
@@ -87,11 +87,11 @@ namespace ApiEstudiantesV2.Controllers
         {
             try
             {
-                var estudiante = context.estudiante.FirstOrDefault(p => p.id == id);
+                var estudiante = _context.estudiante.FirstOrDefault(p => p.id == id);
                 if (estudiante != null)
                 {
-                    context.estudiante.Remove(estudiante);
-                    context.SaveChanges();
+                    _context.estudiante.Remove(estudiante);
+                    _context.SaveChanges();
                     return Ok(id);
                 }
                 else

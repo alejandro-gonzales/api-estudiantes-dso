@@ -14,17 +14,17 @@ namespace ApiEstudiantesV2.Controllers
     [ApiController]
     public class TipoUsuarioController : ControllerBase
     {
-        private readonly AppDbContext context;
-        public TipoUsuarioController(AppDbContext _context)
+        private readonly AppDbContext _context;
+        public TipoUsuarioController(AppDbContext context)
         {
-            this.context = _context;
+            this._context = context;
         }
         [HttpGet]
         public ActionResult GetAll()
         {
             try
             {
-                return Ok(context.tipoUsuario.ToList());
+                return Ok(_context.tipoUsuario.ToList());
             }
             catch (Exception ex)
             {
@@ -37,7 +37,7 @@ namespace ApiEstudiantesV2.Controllers
         {
             try
             {
-                var tipoUsuario = context.tipoUsuario.FirstOrDefault(item => item.id == id);
+                var tipoUsuario = _context.tipoUsuario.FirstOrDefault(item => item.id == id);
                 return Ok(tipoUsuario);
             }
             catch (Exception ex)
@@ -51,8 +51,8 @@ namespace ApiEstudiantesV2.Controllers
         {
             try
             {
-                context.tipoUsuario.Add(tipoUsuario);
-                context.SaveChanges();
+                _context.tipoUsuario.Add(tipoUsuario);
+                _context.SaveChanges();
                 return CreatedAtRoute("GetByIdTipoUsuario", new { tipoUsuario.id }, tipoUsuario);
             }
             catch (Exception ex)
@@ -67,8 +67,8 @@ namespace ApiEstudiantesV2.Controllers
             {
                 if (tipoUsuario.id == id)
                 {
-                    context.Entry(tipoUsuario).State = EntityState.Modified;
-                    context.SaveChanges();
+                    _context.Entry(tipoUsuario).State = EntityState.Modified;
+                    _context.SaveChanges();
                     return CreatedAtRoute("GetById", new { id = tipoUsuario.id }, tipoUsuario);
                 }
                 else
@@ -87,11 +87,11 @@ namespace ApiEstudiantesV2.Controllers
         {
             try
             {
-                var tipoUsuario = context.tipoUsuario.FirstOrDefault(p => p.id == id);
+                var tipoUsuario = _context.tipoUsuario.FirstOrDefault(p => p.id == id);
                 if (tipoUsuario != null)
                 {
-                    context.tipoUsuario.Remove(tipoUsuario);
-                    context.SaveChanges();
+                    _context.tipoUsuario.Remove(tipoUsuario);
+                    _context.SaveChanges();
                     return Ok(id);
                 }
                 else

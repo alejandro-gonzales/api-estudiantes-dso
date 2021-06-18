@@ -14,17 +14,17 @@ namespace ApiEstudiantesV2.Controllers
     [ApiController]
     public class UsuarioController : ControllerBase
     {
-        private readonly AppDbContext context;
-        public UsuarioController(AppDbContext _context)
+        private readonly AppDbContext _context;
+        public UsuarioController(AppDbContext context)
         {
-            this.context = _context;
+            this._context = context;
         }
         [HttpGet]
         public ActionResult GetAll()
         {
             try
             {
-                return Ok(context.usuario.ToList());
+                return Ok(_context.usuario.Include(p => p.persona).Include(t => t.tipoUsuario).ToList());
             }
             catch (Exception ex)
             {
@@ -37,7 +37,7 @@ namespace ApiEstudiantesV2.Controllers
         {
             try
             {
-                var usuario = context.usuario.FirstOrDefault(item => item.id == id);
+                var usuario = _context.usuario.Include(p => p.persona).Include(t => t.tipoUsuario).FirstOrDefault(item => item.id == id);
                 return Ok(usuario);
             }
             catch (Exception ex)
@@ -51,8 +51,8 @@ namespace ApiEstudiantesV2.Controllers
         {
             try
             {
-                context.usuario.Add(usuario);
-                context.SaveChanges();
+                _context.usuario.Add(usuario);
+                _context.SaveChanges();
                 return CreatedAtRoute("GetByIdUsuario", new { usuario.id }, usuario);
             }
             catch (Exception ex)
@@ -67,8 +67,8 @@ namespace ApiEstudiantesV2.Controllers
             {
                 if (usuario.id == id)
                 {
-                    context.Entry(usuario).State = EntityState.Modified;
-                    context.SaveChanges();
+                    _context.Entry(usuario).State = EntityState.Modified;
+                    _context.SaveChanges();
                     return CreatedAtRoute("GetById", new { id = usuario.id }, usuario);
                 }
                 else
@@ -87,11 +87,11 @@ namespace ApiEstudiantesV2.Controllers
         {
             try
             {
-                var usuario = context.usuario.FirstOrDefault(p => p.id == id);
+                var usuario = _context.usuario.FirstOrDefault(p => p.id == id);
                 if (usuario != null)
                 {
-                    context.usuario.Remove(usuario);
-                    context.SaveChanges();
+                    _context.usuario.Remove(usuario);
+                    _context.SaveChanges();
                     return Ok(id);
                 }
                 else

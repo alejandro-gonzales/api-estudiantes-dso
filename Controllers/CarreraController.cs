@@ -14,17 +14,17 @@ namespace ApiEstudiantesV2.Controllers
     [ApiController]
     public class CarreraController : ControllerBase
     {
-        private readonly AppDbContext context;
-        public CarreraController(AppDbContext _context)
+        private readonly AppDbContext _context;
+        public CarreraController(AppDbContext context)
         {
-            this.context = _context;
+            this._context = context;
         }
         [HttpGet]
         public ActionResult GetAll()
         {
             try
             {
-                return Ok(context.carrera.ToList());
+                return Ok(_context.carrera.ToList());
             }
             catch (Exception ex)
             {
@@ -37,7 +37,7 @@ namespace ApiEstudiantesV2.Controllers
         {
             try
             {
-                var carrera = context.carrera.FirstOrDefault(item => item.id == id);
+                var carrera = _context.carrera.FirstOrDefault(item => item.id == id);
                 return Ok(carrera);
             }
             catch (Exception ex)
@@ -51,8 +51,8 @@ namespace ApiEstudiantesV2.Controllers
         {
             try
             {
-                context.carrera.Add(carrera);
-                context.SaveChanges();
+                _context.carrera.Add(carrera);
+                _context.SaveChanges();
                 return CreatedAtRoute("GetByIdCarrera", new { carrera.id }, carrera);
             }
             catch (Exception ex)
@@ -67,8 +67,8 @@ namespace ApiEstudiantesV2.Controllers
             {
                 if (carrera.id == id)
                 {
-                    context.Entry(carrera).State = EntityState.Modified;
-                    context.SaveChanges();
+                    _context.Entry(carrera).State = EntityState.Modified;
+                    _context.SaveChanges();
                     return CreatedAtRoute("GetById", new { id = carrera.id }, carrera);
                 }
                 else
@@ -87,11 +87,11 @@ namespace ApiEstudiantesV2.Controllers
         {
             try
             {
-                var carrera = context.carrera.FirstOrDefault(p => p.id == id);
+                var carrera = _context.carrera.FirstOrDefault(p => p.id == id);
                 if (carrera != null)
                 {
-                    context.carrera.Remove(carrera);
-                    context.SaveChanges();
+                    _context.carrera.Remove(carrera);
+                    _context.SaveChanges();
                     return Ok(id);
                 }
                 else
