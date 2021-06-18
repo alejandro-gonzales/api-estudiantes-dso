@@ -11,7 +11,9 @@ namespace ApiEstudiantesV2.Models
         [Key]
         public int id { get; set; }
         public int personaId { get; set; }
+        public Persona persona { get; set; }
         public int tipoUsuarioId { get; set; }
+        public TipoUsuario tipoUsuario { get; set; }
         public string correo { get; set; }
         public string pass { get; set; }
         public bool estado { get; set; }

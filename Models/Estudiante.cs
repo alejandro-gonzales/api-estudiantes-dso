@@ -11,7 +11,9 @@ namespace ApiEstudiantesV2.Models
         [Key]
         public int id { get; set; }
         public int personaId { get; set; }
+        public Persona persona { get; set; }
         public int carreraId { get; set; }
+        public Carrera carrera { get; set; }
         public string matricula { get; set; }
         public bool estado { get; set; }
     }
